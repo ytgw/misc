@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
+type squareState = "X" | "O" | null;
+
 function Square({
   value,
   onSquareClick,
 }: {
-  value: string;
+  value: squareState;
   onSquareClick: () => void;
 }): JSX.Element {
   return (
@@ -16,10 +18,10 @@ function Square({
 
 export default function Board(): JSX.Element {
   const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array<string>(9).fill(""));
+  const [squares, setSquares] = useState(Array<squareState>(9).fill(null));
 
   function handleClick(i: number): void {
-    if (squares[i] !== "") {
+    if (squares[i] !== null) {
       return;
     }
 
