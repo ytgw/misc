@@ -1,4 +1,33 @@
+# Reactの三目並べチュートリアル(TypeScript)
+
+## 環境構築メモ
+```
+mkdir react-tutorial-tictactoe-typescript
+cd react-tutorial-tictactoe-typescript
+
+
+# https://create-react-app.dev/docs/getting-started#selecting-a-template
+npx create-react-app . --template typescript
+
+
+# リンター
+# https://eslint.org/docs/latest/use/getting-started
+# https://zenn.dev/ro_komatsuna/articles/eslint_setup
+npm init @eslint/config
+# 設定は下記にした。
+# ✔ How would you like to use ESLint? · To check syntax, find problems, and enforce code style
+# ✔ What type of modules does your project use? · JavaScript modules
+# ✔ Which framework does your project use? · React
+# ✔ Does your project use TypeScript? · Yes
+# ✔ Where does your code run? · Browser
+# ✔ How would you like to define a style for your project? · Use a popular style guid
+# ✔ Which style guide do you want to follow? … Standard
+# ✔ What format do you want your config file to be in? · JSON
+```
+
+
 # Getting Started with Create React App
+以下はCreate React Appで作成された内容。
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
