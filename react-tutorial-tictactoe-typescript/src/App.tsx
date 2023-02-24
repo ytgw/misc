@@ -20,7 +20,7 @@ function Board({
   onPlay: (nextSquares: squareState[]) => void;
 }): JSX.Element {
   function handleClick(i: number): void {
-    if (squares[i] !== null || calculateWinner(squares) !== null) {
+    if (calculateWinner(squares) !== null || squares[i] !== null) {
       return;
     }
 
@@ -109,21 +109,19 @@ function Board({
 }
 
 export default function Game(): JSX.Element {
-  const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array<squareState>(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
   function handlePlay(nextSquares: squareState[]): void {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
-    setXIsNext(!xIsNext);
   }
 
   function jumpTo(nextMove: number): void {
     setCurrentMove(nextMove);
-    setXIsNext(nextMove % 2 === 0);
   }
 
   const moves = history.map((squares: squareState[], move: number): JSX.Element => {
@@ -169,7 +167,6 @@ function calculateWinner(squares: squareState[]): squareState {
     [0, 4, 8],
     [2, 4, 6],
   ];
-
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] !== null && squares[a] === squares[b] && squares[a] === squares[c]) {
