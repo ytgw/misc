@@ -1,5 +1,26 @@
 # [(株)ゆめみのフロントエンドコーディング試験](https://notion.yumemi.co.jp/0e9ef27b55704d7882aab55cc86c999d)
 
+## 環境構築メモ
+
+```
+# https://create-react-app.dev/docs/getting-started#selecting-a-template
+npx create-react-app . --template typescript
+
+# リンター
+# https://eslint.org/docs/latest/use/getting-started
+# https://zenn.dev/ro_komatsuna/articles/eslint_setup
+npm init @eslint/config
+# 設定は下記にした。
+# ✔ How would you like to use ESLint? · To check syntax, find problems, and enforce code style
+# ✔ What type of modules does your project use? · JavaScript modules
+# ✔ Which framework does your project use? · React
+# ✔ Does your project use TypeScript? · Yes
+# ✔ Where does your code run? · Browser
+# ✔ How would you like to define a style for your project? · Use a popular style guid
+# ✔ Which style guide do you want to follow? … Standard
+# ✔ What format do you want your config file to be in? · JSON
+```
+
 # Getting Started with Create React App
 
 以下は Create React App で作成された内容。
