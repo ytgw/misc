@@ -15,12 +15,22 @@ function Square({
 }
 
 export default function Board(): JSX.Element {
+  const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array<string>(9).fill(""));
 
   function handleClick(i: number): void {
+    if (squares[i] !== "") {
+      return;
+    }
+
     const nextSquares = squares.slice();
-    nextSquares[i] = "X";
+    if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
     setSquares(nextSquares);
+    setXIsNext(!xIsNext);
   }
 
   return (
