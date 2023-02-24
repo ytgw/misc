@@ -2,13 +2,7 @@ import React, { useState } from "react";
 
 type squareState = "X" | "O" | null;
 
-function Square({
-  value,
-  onSquareClick,
-}: {
-  value: squareState;
-  onSquareClick: () => void;
-}): JSX.Element {
+function Square({ value, onSquareClick }: { value: squareState; onSquareClick: () => void }): JSX.Element {
   return (
     <button className="square" onClick={onSquareClick}>
       {value}
