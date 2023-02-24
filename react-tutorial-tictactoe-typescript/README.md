@@ -23,6 +23,15 @@ npm init @eslint/config
 # ✔ How would you like to define a style for your project? · Use a popular style guid
 # ✔ Which style guide do you want to follow? … Standard
 # ✔ What format do you want your config file to be in? · JSON
+
+
+# フォーマッター
+# https://prettier.io/docs/en/install.html
+# https://prettier.io/docs/en/install.html#eslint-and-other-linters
+# https://zenn.dev/ro_komatsuna/articles/prettier_setup
+npm install --save-dev --save-exact prettier
+echo {}> .prettierrc.json
+npm install --save-dev eslint-config-prettier
 ```
 
 
