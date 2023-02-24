@@ -5,17 +5,25 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "standard-with-typescript"
+        "standard-with-typescript",
+        "prettier"
     ],
+    "ignorePatterns": ["build/"],
     "overrides": [
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
+        "project": "./tsconfig.json",
         "sourceType": "module"
     },
     "plugins": [
         "react"
     ],
     "rules": {
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
