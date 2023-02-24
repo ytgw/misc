@@ -118,13 +118,37 @@ export default function Game(): JSX.Element {
     setXIsNext(!xIsNext);
   }
 
+  function jumpTo(nextMove: number): void {
+    // TODO
+  }
+
+  const moves = history.map((squares: squareState[], move: number): JSX.Element => {
+    let description;
+    if (move > 0) {
+      description = "Go to move #" + move.toString();
+    } else {
+      description = "Go to game start";
+    }
+    return (
+      <li key={move}>
+        <button
+          onClick={() => {
+            jumpTo(move);
+          }}
+        >
+          {description}
+        </button>
+      </li>
+    );
+  });
+
   return (
     <div className="game">
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{/* TODO */}</ol>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
