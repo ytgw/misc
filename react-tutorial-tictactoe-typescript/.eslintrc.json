@@ -15,5 +15,10 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react"],
-  "rules": {}
+  "rules": {},
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }
