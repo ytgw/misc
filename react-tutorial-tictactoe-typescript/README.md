@@ -1,6 +1,7 @@
-# Reactの三目並べチュートリアル(TypeScript)
+# React の三目並べチュートリアル(TypeScript)
 
 ## 環境構築メモ
+
 ```
 mkdir react-tutorial-tictactoe-typescript
 cd react-tutorial-tictactoe-typescript
@@ -34,9 +35,9 @@ echo {}> .prettierrc.json
 npm install --save-dev eslint-config-prettier
 ```
 
-
 # Getting Started with Create React App
-以下はCreate React Appで作成された内容。
+
+以下は Create React App で作成された内容。
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
