@@ -8,6 +8,7 @@
     "standard-with-typescript",
     "prettier"
   ],
+  "ignorePatterns": ["build/"],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
