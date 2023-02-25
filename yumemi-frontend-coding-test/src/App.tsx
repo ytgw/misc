@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
-function Prefectures(): JSX.Element {
-  const prefectures = ["東京都", "神奈川県"];
+interface PrefectureType {
+  prefCode: number;
+  prefName: string;
+}
 
-  const checkboxList = prefectures.map((name: string): JSX.Element => {
+function Prefectures(): JSX.Element {
+  const [checkedPrefCodes, setCheckedPrefCodes] = useState<number[]>([]);
+  const prefectures: PrefectureType[] = [
+    { prefCode: 1, prefName: "北海道" },
+    { prefCode: 13, prefName: "東京都" },
+    { prefCode: 14, prefName: "神奈川県" },
+  ];
+
+  const checkboxList = prefectures.map((pref: PrefectureType): JSX.Element => {
+    const isChecked = checkedPrefCodes.includes(pref.prefCode);
+
+    // チェック済の都道府県はcheckedPrefCodesから削除し、未チェックのものはcheckedPrefCodesに追加。
+    const handleChange = (): void => {
+      let newCheckedPrefCodes = checkedPrefCodes.slice();
+      if (checkedPrefCodes.includes(pref.prefCode)) {
+        newCheckedPrefCodes = newCheckedPrefCodes.filter((code): boolean => code !== pref.prefCode);
+      } else {
+        newCheckedPrefCodes.push(pref.prefCode);
+      }
+      console.log(newCheckedPrefCodes);
+      setCheckedPrefCodes(newCheckedPrefCodes);
+    };
+
     return (
-      <div key={name}>
-        <label>
-          <input type="checkbox" name="name" value={name} />
-          {name}
-        </label>
-      </div>
+      <label key={pref.prefCode}>
+        <input type="checkbox" name="code" value={pref.prefCode} onChange={handleChange} defaultChecked={isChecked} />
+        {pref.prefName}
+      </label>
     );
   });
-  return <div>{checkboxList}</div>;
+
+  return <>{checkboxList}</>;
 }
 
 function Graph(): JSX.Element {
