@@ -1,18 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import { API_KEY } from "./secret";
 
 interface PrefectureType {
   prefCode: number;
   prefName: string;
 }
 
+function isPrefectureArray(array: any): array is PrefectureType[] {
+  if (!(array instanceof Array)) {
+    return false;
+  }
+  const isPrefArray = array.every((e): boolean => {
+    if (typeof e.prefCode !== "number") {
+      return false;
+    }
+    if (typeof e.prefName !== "string") {
+      return false;
+    }
+    return true;
+  });
+  return isPrefArray;
+}
+
+async function fetchPrefectures(): Promise<PrefectureType[]> {
+  const response = await fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
+    method: "GET",
+    headers: { "X-API-KEY": API_KEY },
+  });
+  const data = await response.json();
+  const prefectures = data.result;
+  if (!isPrefectureArray(prefectures)) {
+    throw new Error("fetched data is not prefecture array.");
+  }
+  return prefectures;
+}
+
 function Prefectures(): JSX.Element {
   const [checkedPrefCodes, setCheckedPrefCodes] = useState<number[]>([]);
-  const prefectures: PrefectureType[] = [
-    { prefCode: 1, prefName: "北海道" },
-    { prefCode: 13, prefName: "東京都" },
-    { prefCode: 14, prefName: "神奈川県" },
-  ];
+  const [prefectures, setPrefectures] = useState<PrefectureType[]>([]);
+
+  useEffect(() => {
+    fetchPrefectures()
+      .then((pref) => {
+        setPrefectures(pref);
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
+  }, []);
 
   const checkboxList = prefectures.map((pref: PrefectureType): JSX.Element => {
     const isChecked = checkedPrefCodes.includes(pref.prefCode);
