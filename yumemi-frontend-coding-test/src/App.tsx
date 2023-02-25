@@ -1,20 +1,32 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+
+function Prefectures(): JSX.Element {
+  const prefectures = ["東京都", "神奈川県"];
+
+  const checkboxList = prefectures.map((name: string): JSX.Element => {
+    return (
+      <div key={name}>
+        <label>
+          <input type="checkbox" name="name" value={name} />
+          {name}
+        </label>
+      </div>
+    );
+  });
+  return <div>{checkboxList}</div>;
+}
+
+function Graph(): JSX.Element {
+  return <div>TODO</div>;
+}
 
 function App(): JSX.Element {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Prefectures />
+      <Graph />
+    </>
   );
 }
 

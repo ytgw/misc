@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
+    <h1 style={{ backgroundColor: "lightGray", textAlign: "center", margin: 0 }}>title</h1>
     <App />
   </React.StrictMode>
 );
