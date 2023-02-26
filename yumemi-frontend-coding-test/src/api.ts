@@ -88,9 +88,9 @@ export async function fetchPopulation(prefCodes: number[]): Promise<PrefPopulati
     const fakeYears: number[] = [];
     for (let i = 1960; i <= 2045; i += 5) fakeYears.push(i);
 
-    const fakePopulations: PrefPopulation[] = prefCodes.map((prefCode, index) => {
+    const fakePopulations: PrefPopulation[] = prefCodes.map((prefCode) => {
       const data = fakeYears.map((year) => {
-        return { year, value: year * (index + 5) };
+        return { year, value: year * prefCode };
       });
       return { prefCode, data };
     });
