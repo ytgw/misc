@@ -1,16 +1,16 @@
 import { API_KEY } from "./secret";
 
-export interface PrefectureType {
+export interface PrefectureName {
   prefCode: number;
   prefName: string;
 }
 
-export interface PrefPopulation {
+interface FetchedPopulation {
   prefCode: number;
   data: Array<{ year: number; value: number }>;
 }
 
-function isPrefectureArray(array: any): array is PrefectureType[] {
+function isPrefectureArray(array: any): array is PrefectureName[] {
   if (!(array instanceof Array)) {
     return false;
   }
@@ -26,7 +26,7 @@ function isPrefectureArray(array: any): array is PrefectureType[] {
   return isPrefArray;
 }
 
-export async function fetchPrefectures(): Promise<PrefectureType[]> {
+export async function fetchPrefectures(): Promise<PrefectureName[]> {
   const isFake = true;
   if (isFake) {
     return [
@@ -63,7 +63,7 @@ function isPopulationData(data: any): boolean {
   return isAllElementValid;
 }
 
-function isPrefPopulationArray(array: any): array is PrefPopulation[] {
+function isFetchedPopulationArray(array: any): array is FetchedPopulation[] {
   if (!(array instanceof Array)) {
     return false;
   }
@@ -82,13 +82,13 @@ function isPrefPopulationArray(array: any): array is PrefPopulation[] {
   return isPrefArray;
 }
 
-export async function fetchPopulation(prefCodes: number[]): Promise<PrefPopulation[]> {
+export async function fetchPopulation(prefCodes: number[]): Promise<FetchedPopulation[]> {
   const isFake = true;
   if (isFake) {
     const fakeYears: number[] = [];
     for (let i = 1960; i <= 2045; i += 5) fakeYears.push(i);
 
-    const fakePopulations: PrefPopulation[] = prefCodes.map((prefCode) => {
+    const fakePopulations: FetchedPopulation[] = prefCodes.map((prefCode) => {
       const data = fakeYears.map((year) => {
         return { year, value: year * prefCode };
       });
@@ -97,7 +97,7 @@ export async function fetchPopulation(prefCodes: number[]): Promise<PrefPopulati
     return fakePopulations;
   }
 
-  const populations: PrefPopulation[] = [];
+  const populations: FetchedPopulation[] = [];
   for (const prefCode of prefCodes) {
     const url =
       "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=" +
@@ -118,7 +118,7 @@ export async function fetchPopulation(prefCodes: number[]): Promise<PrefPopulati
     populations.push({ prefCode, data: totalPopulation });
   }
 
-  if (!isPrefPopulationArray(populations)) {
+  if (!isFetchedPopulationArray(populations)) {
     throw new Error("fetched data is not population array.");
   }
   return populations;

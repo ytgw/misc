@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import "./App.css";
-import { fetchPrefectures, fetchPopulation, type PrefectureType } from "./api";
+import { fetchPrefectures, fetchPopulation, type PrefectureName } from "./api";
 
-interface PrefecturePopulation {
+interface DrawPopulation {
   prefCode: number;
   prefName: string;
   data: Array<{ year: number; value: number }>;
@@ -13,10 +13,10 @@ function Prefectures({
   checkedPrefectures,
   setCheckedPrefectures,
 }: {
-  checkedPrefectures: PrefectureType[];
-  setCheckedPrefectures: (checkedPrefectures: PrefectureType[]) => void;
+  checkedPrefectures: PrefectureName[];
+  setCheckedPrefectures: (checkedPrefectures: PrefectureName[]) => void;
 }): JSX.Element {
-  const [prefectures, setPrefectures] = useState<PrefectureType[]>([]);
+  const [prefectures, setPrefectures] = useState<PrefectureName[]>([]);
 
   useEffect(() => {
     fetchPrefectures()
@@ -28,7 +28,7 @@ function Prefectures({
       });
   }, []);
 
-  const checkboxList = prefectures.map((pref: PrefectureType): JSX.Element => {
+  const checkboxList = prefectures.map((pref: PrefectureName): JSX.Element => {
     const checkedPrefCodes = checkedPrefectures.map((e) => e.prefCode);
     const isChecked = checkedPrefCodes.includes(pref.prefCode);
 
@@ -41,7 +41,7 @@ function Prefectures({
         newCheckedPrefCodes.push(pref.prefCode);
       }
 
-      const newCheckedPrefectures: PrefectureType[] = [];
+      const newCheckedPrefectures: PrefectureName[] = [];
       for (const code of newCheckedPrefCodes) {
         const pref = prefectures.find((e) => e.prefCode === code);
         if (pref === undefined) {
@@ -63,8 +63,8 @@ function Prefectures({
   return <>{checkboxList}</>;
 }
 
-function PopulationChart({ prefectures }: { prefectures: PrefectureType[] }): JSX.Element {
-  const [fetchedPopulations, setFetchedPopulations] = useState<PrefecturePopulation[]>([]);
+function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JSX.Element {
+  const [fetchedPopulations, setFetchedPopulations] = useState<DrawPopulation[]>([]);
 
   useEffect(() => {
     const alreadyFetchedCodes = fetchedPopulations.map((e) => e.prefCode);
@@ -74,7 +74,7 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureType[] }): JS
     fetchPopulation(newFetchCodes)
       .then((populationData) => {
         // populationDataをfetchedPopulationsに追加する。
-        const populations: PrefecturePopulation[] = [];
+        const populations: DrawPopulation[] = [];
         for (const data of populationData) {
           const pref = prefectures.find((drawPref) => drawPref.prefCode === data.prefCode);
           if (pref === undefined) {
@@ -116,7 +116,7 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureType[] }): JS
 }
 
 function App(): JSX.Element {
-  const [checkedPrefectures, setCheckedPrefectures] = useState<PrefectureType[]>([]);
+  const [checkedPrefectures, setCheckedPrefectures] = useState<PrefectureName[]>([]);
   return (
     <>
       <Prefectures checkedPrefectures={checkedPrefectures} setCheckedPrefectures={setCheckedPrefectures} />
