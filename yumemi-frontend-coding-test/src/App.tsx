@@ -106,8 +106,14 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JS
   return (
     <LineChart width={600} height={300} margin={{ top: 30, right: 30, left: 100, bottom: 30 }}>
       <CartesianGrid stroke="#ccc" />
-      <XAxis dataKey="year" allowDuplicatedCategory={false} label={{ value: "年度", position: "bottom" }} />
-      <YAxis dataKey="value" label={{ value: "人口[人]", angle: -90, offset: 50, position: "left" }} />
+      <XAxis
+        type="number"
+        dataKey="year"
+        allowDuplicatedCategory={false}
+        domain={["min", "max"]}
+        label={{ value: "年度", position: "bottom" }}
+      />
+      <YAxis type="number" dataKey="value" label={{ value: "人口[人]", angle: -90, offset: 50, position: "left" }} />
       <Legend verticalAlign="top" />
       {lineChartArray}
       <Tooltip />
