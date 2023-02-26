@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import "./App.css";
-import { fetchPrefectures, type PrefectureType } from "./api";
+import { fetchPrefectures, fetchPopulation, type PrefectureType, type PrefPopulation } from "./api";
 
 function Prefectures(): JSX.Element {
   const [checkedPrefCodes, setCheckedPrefCodes] = useState<number[]>([]);
@@ -44,89 +44,30 @@ function Prefectures(): JSX.Element {
 }
 
 function PopulationChart(): JSX.Element {
-  const fetchedData = [
-    {
-      year: 1960,
-      value: 3443176,
-    },
-    {
-      year: 1965,
-      value: 4430743,
-    },
-    {
-      year: 1970,
-      value: 5472247,
-    },
-    {
-      year: 1975,
-      value: 6397748,
-    },
-    {
-      year: 1980,
-      value: 6924348,
-    },
-    {
-      year: 1985,
-      value: 7431974,
-    },
-    {
-      year: 1990,
-      value: 7980391,
-    },
-    {
-      year: 1995,
-      value: 8245900,
-    },
-    {
-      year: 2000,
-      value: 8489974,
-    },
-    {
-      year: 2005,
-      value: 8791597,
-    },
-    {
-      year: 2010,
-      value: 9048331,
-    },
-    {
-      year: 2015,
-      value: 9126214,
-    },
-    {
-      year: 2020,
-      value: 9237337,
-    },
-    {
-      year: 2025,
-      value: 9069562,
-    },
-    {
-      year: 2030,
-      value: 8933474,
-    },
-    {
-      year: 2035,
-      value: 8750958,
-    },
-    {
-      year: 2040,
-      value: 8541016,
-    },
-    {
-      year: 2045,
-      value: 8312524,
-    },
-  ];
-  const data = fetchedData.map((obj) => {
-    return { 年度: obj.year, 人口: obj.value };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [prefCodes, _] = useState<number[]>([1, 14]);
+  const [prefPopulations, setPrefPopulations] = useState<PrefPopulation[]>([]);
+
+  useEffect(() => {
+    fetchPopulation(prefCodes)
+      .then((populations) => {
+        setPrefPopulations(populations);
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
+  }, [prefCodes]);
+
+  const lineChartArray = prefPopulations.map((pref) => {
+    return <Line dataKey="value" data={pref.data} key={pref.prefCode} />;
   });
+
   return (
-    <LineChart width={600} height={300} data={data} margin={{ top: 30, right: 30, left: 100, bottom: 30 }}>
-      <Line type="monotone" dataKey="人口" stroke="#8884d8" />
+    <LineChart width={600} height={300} margin={{ top: 30, right: 30, left: 100, bottom: 30 }}>
       <CartesianGrid stroke="#ccc" />
-      <XAxis dataKey="年度" label={{ value: "年度", position: "bottom" }} />
-      <YAxis label={{ value: "人口[人]", angle: -90, offset: 50, position: "left" }} />
+      <XAxis dataKey="year" allowDuplicatedCategory={false} label={{ value: "年度", position: "bottom" }} />
+      <YAxis dataKey="value" label={{ value: "人口[人]", angle: -90, offset: 50, position: "left" }} />
+      {lineChartArray}
       <Tooltip />
     </LineChart>
   );
