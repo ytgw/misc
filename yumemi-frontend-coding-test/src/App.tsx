@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import "./App.css";
-import { fetchPrefectures, fetchPopulation, type PrefectureType, type PrefPopulation } from "./api";
+import { fetchPrefectures, fetchPopulation, type PrefectureType } from "./api";
+
+interface PrefecturePopulation {
+  prefCode: number;
+  prefName: string;
+  data: Array<{ year: number; value: number }>;
+}
 
 function Prefectures({
   checkedPrefectures,
@@ -58,32 +64,43 @@ function Prefectures({
 }
 
 function PopulationChart({ prefectures }: { prefectures: PrefectureType[] }): JSX.Element {
-  const [prefPopulations, setPrefPopulations] = useState<PrefPopulation[]>([]);
+  const [fetchedPopulations, setFetchedPopulations] = useState<PrefecturePopulation[]>([]);
 
   useEffect(() => {
-    const prefCodes = prefectures.map((e) => e.prefCode);
-    fetchPopulation(prefCodes)
-      .then((populations) => {
-        setPrefPopulations(populations);
+    const alreadyFetchedCodes = fetchedPopulations.map((e) => e.prefCode);
+    const drawCodes = prefectures.map((e) => e.prefCode);
+    const newFetchCodes = drawCodes.filter((drawCode) => !alreadyFetchedCodes.includes(drawCode));
+
+    fetchPopulation(newFetchCodes)
+      .then((populationData) => {
+        // populationDataをfetchedPopulationsに追加する。
+        const populations: PrefecturePopulation[] = [];
+        for (const data of populationData) {
+          const pref = prefectures.find((drawPref) => drawPref.prefCode === data.prefCode);
+          if (pref === undefined) {
+            continue;
+          }
+          populations.push({ prefCode: data.prefCode, prefName: pref.prefName, data: data.data });
+        }
+        if (populations.length === 0) {
+          // 無限ループ防止。
+          return;
+        }
+        setFetchedPopulations(fetchedPopulations.concat(populations));
       })
       .catch((reason) => {
         console.log(reason);
       });
-  }, [prefectures]);
+  }, [prefectures, fetchedPopulations]);
 
-  const lineChartArray = prefPopulations.map((pref, index) => {
+  const drawCodes = prefectures.map((e) => e.prefCode);
+  const drawPopulations = fetchedPopulations.filter((e) => drawCodes.includes(e.prefCode));
+
+  const lineChartArray = drawPopulations.map((e, index) => {
     const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
     const color = COLORS[index % COLORS.length];
-    let prefName: string;
-    const foundPref = prefectures.find((e) => e.prefCode === pref.prefCode);
-    if (foundPref === undefined) {
-      prefName = pref.prefCode.toString();
-    } else {
-      prefName = foundPref.prefName;
-    }
-    return (
-      <Line type="monotone" dataKey="value" data={pref.data} name={prefName} key={pref.prefCode} stroke={color} />
-    );
+
+    return <Line type="monotone" dataKey="value" data={e.data} name={e.prefName} key={e.prefCode} stroke={color} />;
   });
 
   return (
