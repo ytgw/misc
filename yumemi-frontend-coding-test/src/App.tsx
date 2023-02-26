@@ -3,8 +3,13 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 import "./App.css";
 import { fetchPrefectures, fetchPopulation, type PrefectureType, type PrefPopulation } from "./api";
 
-function Prefectures(): JSX.Element {
-  const [checkedPrefCodes, setCheckedPrefCodes] = useState<number[]>([]);
+function Prefectures({
+  checkedPrefCodes,
+  setCheckedPrefCodes,
+}: {
+  checkedPrefCodes: number[];
+  setCheckedPrefCodes: (checkedPrefCodes: number[]) => void;
+}): JSX.Element {
   const [prefectures, setPrefectures] = useState<PrefectureType[]>([]);
 
   useEffect(() => {
@@ -43,9 +48,7 @@ function Prefectures(): JSX.Element {
   return <>{checkboxList}</>;
 }
 
-function PopulationChart(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [prefCodes, _] = useState<number[]>([1, 14]);
+function PopulationChart({ prefCodes }: { prefCodes: number[] }): JSX.Element {
   const [prefPopulations, setPrefPopulations] = useState<PrefPopulation[]>([]);
 
   useEffect(() => {
@@ -74,10 +77,11 @@ function PopulationChart(): JSX.Element {
 }
 
 function App(): JSX.Element {
+  const [checkedPrefCodes, setCheckedPrefCodes] = useState<number[]>([]);
   return (
     <>
-      <Prefectures />
-      <PopulationChart />
+      <Prefectures checkedPrefCodes={checkedPrefCodes} setCheckedPrefCodes={setCheckedPrefCodes} />
+      <PopulationChart prefCodes={checkedPrefCodes} />
     </>
   );
 }
