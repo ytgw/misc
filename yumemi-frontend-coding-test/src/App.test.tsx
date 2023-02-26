@@ -26,7 +26,10 @@ test("fetchPrefectures mock", async () => {
   const prefectures = await fetchPrefectures();
   expect(prefectures[0].prefCode).toBe(1);
   expect(prefectures[0].prefName).toBe("北海道");
-  expect(prefectures).toBe(fakeData.result);
+  for (let i = 0; i < prefectures.length; i++) {
+    expect(prefectures[i].prefCode).toBe(fakeData.result[i].prefCode);
+    expect(prefectures[i].prefName).toBe(fakeData.result[i].prefName);
+  }
 });
 
 test("render checkboxes", async () => {
