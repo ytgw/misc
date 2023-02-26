@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import "./App.css";
 import { fetchPrefectures, fetchPopulation, type PrefectureType, type PrefPopulation } from "./api";
 
@@ -71,7 +71,9 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureType[] }): JS
       });
   }, [prefectures]);
 
-  const lineChartArray = prefPopulations.map((pref) => {
+  const lineChartArray = prefPopulations.map((pref, index) => {
+    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+    const color = COLORS[index % COLORS.length];
     let prefName: string;
     const foundPref = prefectures.find((e) => e.prefCode === pref.prefCode);
     if (foundPref === undefined) {
@@ -79,7 +81,9 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureType[] }): JS
     } else {
       prefName = foundPref.prefName;
     }
-    return <Line type="monotone" dataKey="value" data={pref.data} name={prefName} key={pref.prefCode} />;
+    return (
+      <Line type="monotone" dataKey="value" data={pref.data} name={prefName} key={pref.prefCode} stroke={color} />
+    );
   });
 
   return (
@@ -87,6 +91,7 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureType[] }): JS
       <CartesianGrid stroke="#ccc" />
       <XAxis dataKey="year" allowDuplicatedCategory={false} label={{ value: "年度", position: "bottom" }} />
       <YAxis dataKey="value" label={{ value: "人口[人]", angle: -90, offset: 50, position: "left" }} />
+      <Legend verticalAlign="top" />
       {lineChartArray}
       <Tooltip />
     </LineChart>
