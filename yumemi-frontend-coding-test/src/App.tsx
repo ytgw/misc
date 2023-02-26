@@ -96,9 +96,9 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JS
   const drawCodes = prefectures.map((e) => e.prefCode);
   const drawPopulations = fetchedPopulations.filter((e) => drawCodes.includes(e.prefCode));
 
-  const lineChartArray = drawPopulations.map((e, index) => {
-    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-    const color = COLORS[index % COLORS.length];
+  const lineChartArray = drawPopulations.map((e) => {
+    const COLORS = ["red", "blue", "green", "yellow", "magenta", "cyan", "gray", "black"];
+    const color = COLORS[e.prefCode % COLORS.length];
 
     return <Line type="monotone" dataKey="value" data={e.data} name={e.prefName} key={e.prefCode} stroke={color} />;
   });
