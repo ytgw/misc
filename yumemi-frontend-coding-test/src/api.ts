@@ -22,6 +22,14 @@ function isPrefectureArray(array: any): array is PrefectureType[] {
 }
 
 export async function fetchPrefectures(): Promise<PrefectureType[]> {
+  const isFake = true;
+  if (isFake) {
+    return [
+      { prefCode: 1, prefName: "北海道" },
+      { prefCode: 13, prefName: "東京都" },
+      { prefCode: 14, prefName: "神奈川県" },
+    ];
+  }
   const response = await fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
     method: "GET",
     headers: { "X-API-KEY": API_KEY },
