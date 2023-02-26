@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, act } from "@testing-library/react";
-import App, { fetchPrefectures } from "./App";
+import App from "./App";
+import { fetchPrefectures } from "./api";
 
 const fakeData = {
   result: [
