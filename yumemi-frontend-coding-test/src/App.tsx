@@ -23,7 +23,7 @@ function isPrefectureArray(array: any): array is PrefectureType[] {
   return isPrefArray;
 }
 
-async function fetchPrefectures(): Promise<PrefectureType[]> {
+export async function fetchPrefectures(): Promise<PrefectureType[]> {
   const response = await fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
     method: "GET",
     headers: { "X-API-KEY": API_KEY },
