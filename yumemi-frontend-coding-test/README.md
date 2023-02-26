@@ -27,6 +27,11 @@ npm init @eslint/config
 npm install --save-dev --save-exact prettier
 echo {}> .prettierrc.json
 npm install --save-dev eslint-config-prettier
+
+# グラフ描画ライブラリ
+# Highcharts や Recharts が紹介されていた。
+# Highcharts は独自ライセンスだったため、MITライセンスのRechartsを使用する。
+npm install recharts
 ```
 
 ### ESLint の設定
