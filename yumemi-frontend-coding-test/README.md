@@ -19,7 +19,91 @@ npm init @eslint/config
 # ✔ How would you like to define a style for your project? · Use a popular style guid
 # ✔ Which style guide do you want to follow? … Standard
 # ✔ What format do you want your config file to be in? · JSON
+
+# フォーマッター
+# https://prettier.io/docs/en/install.html
+# https://prettier.io/docs/en/install.html#eslint-and-other-linters
+# https://zenn.dev/ro_komatsuna/articles/prettier_setup
+npm install --save-dev --save-exact prettier
+echo {}> .prettierrc.json
+npm install --save-dev eslint-config-prettier
 ```
+
+### ESLint の設定
+
+`npm init @eslint/config`で作成された.eslintrc.json をベースに以下を変更。
+
+- 実行時のエラー対処
+
+  ```json:.eslintrc.json
+  {
+    "parserOptions": {
+      "project": "./tsconfig.json",
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+  }
+  ```
+
+- ビルドファイルの除外
+
+  ```json:.eslintrc.json
+  {
+    "ignorePatterns": ["build/"]
+  }
+  ```
+
+- prettier との競合回避
+
+  extends の最後に記述する。
+
+  ```json:.eslintrc.json
+  {
+    "extends": [
+      "other extends",
+      "prettier"
+    ],
+  }
+  ```
+
+- React Hook 関連のルール追加。
+
+  ```json:.eslintrc.json
+  {
+    "plugins": ["react-hooks"],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    }
+  }
+  ```
+
+### prettier の設定
+
+prettier の設定ファイル.prettierrc.json と.prettierignore を下記のように変更した。
+
+- .prettierrc.json
+
+  列数を GitHub のコードレビュー画面のデフォルトに合わせて変更。
+
+  ```json:.prettierrc.json
+  {
+    "printWidth": 119
+  }
+  ```
+
+- .prettierignore
+
+  ビルドファイルなどフォーマット不要なものを追加。
+
+  ```
+  # Ignore artifacts:
+  build
+  coverage
+  ```
 
 # Getting Started with Create React App
 
