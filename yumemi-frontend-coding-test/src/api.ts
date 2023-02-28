@@ -86,7 +86,7 @@ export async function fetchPopulation(prefCodes: number[]): Promise<FetchedPopul
   const isFake = true;
   if (isFake) {
     const fakeYears: number[] = [];
-    for (let i = 1960; i <= 2045; i += 5) fakeYears.push(i);
+    for (let i = 1960; i <= 2020; i += 5) fakeYears.push(i);
 
     const fakePopulations: FetchedPopulation[] = prefCodes.map((prefCode) => {
       const data = fakeYears.map((year) => {
@@ -121,5 +121,13 @@ export async function fetchPopulation(prefCodes: number[]): Promise<FetchedPopul
   if (!isFetchedPopulationArray(populations)) {
     throw new Error("fetched data is not population array.");
   }
-  return populations;
+
+  // 将来の予測データを取り除き、過去の人口データだけ抽出する。
+  const pastPopulations = populations.map((e) => {
+    return {
+      prefCode: e.prefCode,
+      data: e.data.filter((yearAndValue) => yearAndValue.year <= 2020),
+    };
+  });
+  return pastPopulations;
 }
