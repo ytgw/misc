@@ -49,7 +49,7 @@ function Prefectures({
         }
         newCheckedPrefectures.push({ prefCode: pref.prefCode, prefName: pref.prefName });
       }
-      setCheckedPrefectures(newCheckedPrefectures);
+      setCheckedPrefectures(newCheckedPrefectures.sort((e1, e2) => e1.prefCode - e2.prefCode));
     };
 
     return (
@@ -91,7 +91,7 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JS
           // 無限ループ防止。
           return;
         }
-        setFetchedPopulations(fetchedPopulations.concat(populations));
+        setFetchedPopulations(fetchedPopulations.concat(populations).sort((e1, e2) => e1.prefCode - e2.prefCode));
       })
       .catch((reason) => {
         console.log(reason);
