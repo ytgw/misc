@@ -1,5 +1,7 @@
 import { API_KEY } from "./secret";
 
+const isFakeData = true;
+
 export interface PrefectureName {
   prefCode: number;
   prefName: string;
@@ -27,7 +29,7 @@ function isPrefectureArray(array: any): array is PrefectureName[] {
 }
 
 export async function fetchPrefectures(): Promise<PrefectureName[]> {
-  const isFake = true;
+  const isFake = isFakeData;
   if (isFake) {
     return [
       { prefCode: 1, prefName: "北海道" },
@@ -83,7 +85,7 @@ function isFetchedPopulationArray(array: any): array is FetchedPopulation[] {
 }
 
 export async function fetchPopulation(prefCodes: number[]): Promise<FetchedPopulation[]> {
-  const isFake = true;
+  const isFake = isFakeData;
   if (isFake) {
     const fakeYears: number[] = [];
     for (let i = 1960; i <= 2020; i += 5) fakeYears.push(i);
