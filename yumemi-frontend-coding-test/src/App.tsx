@@ -53,7 +53,7 @@ function Prefectures({
     };
 
     return (
-      <label key={pref.prefCode}>
+      <label key={pref.prefCode} className="prefecture-checkbox">
         <input type="checkbox" name="code" value={pref.prefCode} onChange={handleChange} defaultChecked={isChecked} />
         {pref.prefName}
       </label>

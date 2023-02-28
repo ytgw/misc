@@ -4,6 +4,10 @@
   margin-right: auto;
 }
 
+.prefecture-checkbox {
+  display: inline-block;
+}
+
 @media screen and (max-width: 768px) {
   /* スマートフォン向け */
   /* .app {
