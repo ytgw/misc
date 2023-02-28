@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import "./App.css";
 import { fetchPrefectures, fetchPopulation, type PrefectureName } from "./api";
 
@@ -60,7 +60,12 @@ function Prefectures({
     );
   });
 
-  return <>{checkboxList}</>;
+  return (
+    <div className="prefectures">
+      <div>都道府県</div>
+      {checkboxList}
+    </div>
+  );
 }
 
 function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JSX.Element {
@@ -104,30 +109,32 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JS
   });
 
   return (
-    <LineChart width={600} height={300} margin={{ top: 30, right: 30, left: 100, bottom: 30 }}>
-      <CartesianGrid stroke="#ccc" />
-      <XAxis
-        type="number"
-        dataKey="year"
-        allowDuplicatedCategory={false}
-        domain={["min", "max"]}
-        label={{ value: "年度", position: "bottom" }}
-      />
-      <YAxis type="number" dataKey="value" label={{ value: "人口[人]", angle: -90, offset: 50, position: "left" }} />
-      <Legend verticalAlign="top" />
-      {lineChartArray}
-      <Tooltip />
-    </LineChart>
+    <ResponsiveContainer width="100%" height={400}>
+      <LineChart margin={{ top: 50, right: 30, left: 10, bottom: 30 }}>
+        <CartesianGrid stroke="#ccc" />
+        <XAxis
+          type="number"
+          dataKey="year"
+          allowDuplicatedCategory={false}
+          domain={["min", "max"]}
+          label={{ value: "年度", position: "bottom" }}
+        />
+        <YAxis type="number" dataKey="value" label={{ value: "人口数", offset: 30, position: "top" }} />
+        <Legend verticalAlign="top" />
+        {lineChartArray}
+        <Tooltip />
+      </LineChart>
+    </ResponsiveContainer>
   );
 }
 
 function App(): JSX.Element {
   const [checkedPrefectures, setCheckedPrefectures] = useState<PrefectureName[]>([]);
   return (
-    <>
+    <div className="app">
       <Prefectures checkedPrefectures={checkedPrefectures} setCheckedPrefectures={setCheckedPrefectures} />
       <PopulationChart prefectures={checkedPrefectures} />
-    </>
+    </div>
   );
 }
 

@@ -16,6 +16,12 @@ beforeEach(() => {
     json: async () => await Promise.resolve(fakeData),
   };
   jest.spyOn(global, "fetch").mockResolvedValue(fakeResponse);
+
+  // TypeError: window.ResizeObserver is not a constructorへの対処としてmock化
+  window.ResizeObserver = jest.fn().mockImplementation(() => ({
+    disconnect: jest.fn(),
+    observe: jest.fn(),
+  }));
 });
 
 afterEach(() => {
