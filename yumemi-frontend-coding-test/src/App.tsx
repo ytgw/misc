@@ -120,22 +120,25 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JS
   }
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <LineChart margin={{ top: 50, right: 30, left: 10, bottom: 30 }}>
-        <CartesianGrid stroke="#ccc" />
-        <XAxis
-          type="number"
-          dataKey="year"
-          allowDuplicatedCategory={false}
-          domain={["min", "max"]}
-          label={{ value: "年度", position: "bottom" }}
-        />
-        <YAxis type="number" dataKey="value" label={{ value: "人口数", offset: 30, position: "top" }} />
-        <Legend verticalAlign="top" />
-        {lineChartArray}
-        <Tooltip />
-      </LineChart>
-    </ResponsiveContainer>
+    <>
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart margin={{ top: 50, right: 30, left: 10, bottom: 30 }}>
+          <CartesianGrid stroke="#ccc" />
+          <XAxis
+            type="number"
+            dataKey="year"
+            allowDuplicatedCategory={false}
+            domain={["min", "max"]}
+            label={{ value: "年度", position: "bottom" }}
+          />
+          <YAxis type="number" dataKey="value" label={{ value: "人口数", offset: 30, position: "top" }} />
+          <Legend verticalAlign="top" />
+          {lineChartArray}
+          <Tooltip />
+        </LineChart>
+      </ResponsiveContainer>
+      <div>出典：RESAS（地域経済分析システム）</div>
+    </>
   );
 }
 
