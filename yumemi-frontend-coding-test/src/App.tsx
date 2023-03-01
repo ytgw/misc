@@ -60,6 +60,10 @@ function Prefectures({
     );
   });
 
+  if (checkboxList.length === 0) {
+    return <div>都道府県一覧を取得していますのでお待ちください。</div>;
+  }
+
   return (
     <div className="prefectures">
       <div>都道府県</div>
@@ -107,6 +111,13 @@ function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JS
 
     return <Line type="monotone" dataKey="value" data={e.data} name={e.prefName} key={e.prefCode} stroke={color} />;
   });
+
+  if (prefectures.length === 0) {
+    return <div>人口推移グラフを表示したい都道府県をチェックしてください。</div>;
+  }
+  if (lineChartArray.length === 0) {
+    return <div>都道府県の人口データを取得していますのでお待ちください。</div>;
+  }
 
   return (
     <ResponsiveContainer width="100%" height={400}>
