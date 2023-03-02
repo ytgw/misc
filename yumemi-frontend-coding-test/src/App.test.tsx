@@ -15,6 +15,37 @@ jest.mock("recharts", () => {
   };
 });
 
+jest.mock("./api", () => {
+  const OriginalModule = jest.requireActual("./api");
+
+  return {
+    ...OriginalModule,
+    fetchPrefectures: async () => {
+      const fakePrefectureNames = [
+        { prefCode: 1, prefName: "北海道" },
+        { prefCode: 13, prefName: "東京都" },
+        { prefCode: 14, prefName: "神奈川県" },
+      ];
+      return await Promise.resolve(fakePrefectureNames);
+    },
+    fetchPopulation: async (prefCodes: number[]) => {
+      // fakeデータの作成
+      const fakeYears: number[] = [];
+      for (let i = 1960; i <= 2020; i += 5) {
+        fakeYears.push(i);
+      }
+      const fakePopulations = prefCodes.map((prefCode) => {
+        const data = fakeYears.map((year) => {
+          return { year, value: year * prefCode };
+        });
+        return { prefCode, data };
+      });
+
+      return await Promise.resolve(fakePopulations);
+    },
+  };
+});
+
 describe("Prefectures", () => {
   const fakeData = {
     result: [
@@ -23,23 +54,6 @@ describe("Prefectures", () => {
       { prefCode: 14, prefName: "神奈川県" },
     ],
   };
-
-  beforeEach(() => {
-    const fakeResponse: any = {
-      json: async () => await Promise.resolve(fakeData),
-    };
-    jest.spyOn(global, "fetch").mockResolvedValue(fakeResponse);
-
-    // TypeError: window.ResizeObserver is not a constructorへの対処としてmock化
-    window.ResizeObserver = jest.fn().mockImplementation(() => ({
-      disconnect: jest.fn(),
-      observe: jest.fn(),
-    }));
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
 
   test("fetchPrefectures mock", async () => {
     const prefectures = await fetchPrefectures();
@@ -62,27 +76,6 @@ describe("Prefectures", () => {
 
 describe("PopulationChart", () => {
   beforeEach(() => {
-    // [0,1,...47]
-    const prefCodes = [...Array(47)].map((_v, i) => i + 1);
-
-    // fakeデータの作成
-    const fakeYears: number[] = [];
-    for (let i = 1960; i <= 2020; i += 5) {
-      fakeYears.push(i);
-    }
-    const fakePopulations = prefCodes.map((prefCode) => {
-      const data = fakeYears.map((year) => {
-        return { year, value: year * prefCode };
-      });
-      return { prefCode, data };
-    });
-
-    // fakeデータをfetchが返すように変更。
-    const fakeResponse: any = {
-      json: async () => await Promise.resolve(fakePopulations),
-    };
-    jest.spyOn(global, "fetch").mockResolvedValue(fakeResponse);
-
     // TypeError: window.ResizeObserver is not a constructorへの対処としてmock化
     window.ResizeObserver = jest.fn().mockImplementation(() => ({
       disconnect: jest.fn(),
@@ -112,7 +105,7 @@ describe("PopulationChart", () => {
     }
   });
 
-  test("render App", async () => {
+  test("render PopulationChart", async () => {
     const prefectures = [
       { prefCode: 1, prefName: "北海道" },
       { prefCode: 13, prefName: "東京都" },
