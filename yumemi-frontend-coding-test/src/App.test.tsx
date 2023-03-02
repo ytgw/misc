@@ -1,7 +1,19 @@
 import React from "react";
 import { render, screen, act } from "@testing-library/react";
-import { Prefectures } from "./App";
-import { fetchPrefectures } from "./api";
+import { Prefectures, PopulationChart } from "./App";
+import { fetchPrefectures, fetchPopulation } from "./api";
+
+jest.mock("recharts", () => {
+  const OriginalModule = jest.requireActual("recharts");
+  return {
+    ...OriginalModule,
+    ResponsiveContainer: ({ children }: { children: any }) => (
+      <OriginalModule.ResponsiveContainer width={800} height={800}>
+        {children}
+      </OriginalModule.ResponsiveContainer>
+    ),
+  };
+});
 
 describe("Prefectures", () => {
   const fakeData = {
@@ -45,5 +57,72 @@ describe("Prefectures", () => {
     );
     const prefecture = screen.getByText(/東京都/i);
     expect(prefecture).toBeInTheDocument();
+  });
+});
+
+describe("PopulationChart", () => {
+  beforeEach(() => {
+    // [0,1,...47]
+    const prefCodes = [...Array(47)].map((_v, i) => i + 1);
+
+    // fakeデータの作成
+    const fakeYears: number[] = [];
+    for (let i = 1960; i <= 2020; i += 5) {
+      fakeYears.push(i);
+    }
+    const fakePopulations = prefCodes.map((prefCode) => {
+      const data = fakeYears.map((year) => {
+        return { year, value: year * prefCode };
+      });
+      return { prefCode, data };
+    });
+
+    // fakeデータをfetchが返すように変更。
+    const fakeResponse: any = {
+      json: async () => await Promise.resolve(fakePopulations),
+    };
+    jest.spyOn(global, "fetch").mockResolvedValue(fakeResponse);
+
+    // TypeError: window.ResizeObserver is not a constructorへの対処としてmock化
+    window.ResizeObserver = jest.fn().mockImplementation(() => ({
+      disconnect: jest.fn(),
+      observe: jest.fn(),
+    }));
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("fetchPopulation mock", async () => {
+    const fetchedPopulations = await fetchPopulation([1, 2, 3]);
+    expect(fetchedPopulations[0].prefCode).toBe(1);
+    fetchedPopulations[0].data.forEach(({ year, value }, index) => {
+      expect(year).toBe(1960 + 5 * index);
+      expect(value).toBe(year * fetchedPopulations[0].prefCode);
+    });
+
+    for (let i = 0; i < fetchedPopulations.length; i++) {
+      const fetchedPopulation = fetchedPopulations[i];
+      const prefCode = fetchedPopulation.prefCode;
+      fetchedPopulation.data.forEach(({ year, value }, index) => {
+        expect(year).toBe(1960 + 5 * index);
+        expect(value).toBe(year * prefCode);
+      });
+    }
+  });
+
+  test("render App", async () => {
+    const prefectures = [
+      { prefCode: 1, prefName: "北海道" },
+      { prefCode: 13, prefName: "東京都" },
+      { prefCode: 14, prefName: "神奈川県" },
+    ];
+    await act(async () => render(<PopulationChart prefectures={prefectures} />));
+    const source = screen.getByText(/出典：RESAS（地域経済分析システム）/i);
+    expect(source).toBeInTheDocument();
+
+    const chart = screen.getByText(/東京都/i);
+    expect(chart).toBeInTheDocument();
   });
 });

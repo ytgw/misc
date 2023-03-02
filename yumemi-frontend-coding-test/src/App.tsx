@@ -72,7 +72,7 @@ export function Prefectures({
   );
 }
 
-function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JSX.Element {
+export function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JSX.Element {
   const [fetchedPopulations, setFetchedPopulations] = useState<DrawPopulation[]>([]);
 
   useEffect(() => {
