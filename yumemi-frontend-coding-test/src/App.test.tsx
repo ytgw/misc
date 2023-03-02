@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, act } from "@testing-library/react";
-import { Prefectures, PopulationChart } from "./App";
+import App, { Prefectures, PopulationChart } from "./App";
 import { fetchPrefectures, fetchPopulation } from "./api";
 
 jest.mock("recharts", () => {
@@ -117,5 +117,24 @@ describe("PopulationChart", () => {
 
     const chart = screen.getByText(/東京都/i);
     expect(chart).toBeInTheDocument();
+  });
+});
+
+describe("App", () => {
+  beforeEach(() => {
+    // TypeError: window.ResizeObserver is not a constructorへの対処としてmock化
+    window.ResizeObserver = jest.fn().mockImplementation(() => ({
+      disconnect: jest.fn(),
+      observe: jest.fn(),
+    }));
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("render App", async () => {
+    await act(async () => render(<App />));
+    expect(screen.getByText(/人口推移グラフを表示したい都道府県をチェックしてください。/i)).toBeInTheDocument();
   });
 });
