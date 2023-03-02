@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, act } from "@testing-library/react";
-import App from "./App";
+import { Prefectures } from "./App";
 import { fetchPrefectures } from "./api";
 
 describe("Prefectures", () => {
@@ -39,8 +39,10 @@ describe("Prefectures", () => {
     }
   });
 
-  test("render checkboxes", async () => {
-    await act(async () => render(<App />));
+  test("render Prefectures", async () => {
+    await act(async () =>
+      render(<Prefectures checkedPrefectures={fakeData.result} setCheckedPrefectures={() => {}} />)
+    );
     const prefecture = screen.getByText(/東京都/i);
     expect(prefecture).toBeInTheDocument();
   });

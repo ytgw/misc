@@ -9,7 +9,7 @@ interface DrawPopulation {
   data: Array<{ year: number; value: number }>;
 }
 
-function Prefectures({
+export function Prefectures({
   checkedPrefectures,
   setCheckedPrefectures,
 }: {
