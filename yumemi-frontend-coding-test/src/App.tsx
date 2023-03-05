@@ -9,24 +9,59 @@ interface DrawPopulation {
   data: Array<{ year: number; value: number }>;
 }
 
+function APIKey({ setApiKey }: { setApiKey: (apiKey: string) => void }): JSX.Element {
+  const [inputApiKey, setInputApiKey] = useState<string>("");
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        console.log("RESAS API Key: " + inputApiKey);
+      }}
+    >
+      <input
+        type="text"
+        placeholder="RESAS API Keyを入力してください。"
+        value={inputApiKey}
+        onChange={(event) => {
+          setInputApiKey(event.target.value);
+        }}
+        className="api-key-input-text"
+      />
+      <button
+        onClick={() => {
+          setApiKey(inputApiKey);
+        }}
+      >
+        設定
+      </button>
+    </form>
+  );
+}
+
 export function Prefectures({
   checkedPrefectures,
   setCheckedPrefectures,
+  apiKey,
 }: {
   checkedPrefectures: PrefectureName[];
   setCheckedPrefectures: (checkedPrefectures: PrefectureName[]) => void;
+  apiKey: string | null;
 }): JSX.Element {
   const [prefectures, setPrefectures] = useState<PrefectureName[]>([]);
 
   useEffect(() => {
-    fetchPrefectures()
+    if (apiKey === null || apiKey.length === 0) {
+      return;
+    }
+    fetchPrefectures(apiKey)
       .then((pref) => {
         setPrefectures(pref);
       })
       .catch(() => {
         console.error("都道府県一覧を取得できませんでした。");
       });
-  }, []);
+  }, [apiKey]);
 
   const checkboxList = prefectures.map((pref: PrefectureName): JSX.Element => {
     const checkedPrefCodes = checkedPrefectures.map((e) => e.prefCode);
@@ -60,6 +95,9 @@ export function Prefectures({
     );
   });
 
+  if (apiKey === null || apiKey.length === 0) {
+    return <div>RESAS API Keyを設定してください。</div>;
+  }
   if (checkboxList.length === 0) {
     return <div>都道府県一覧を取得していますのでお待ちください。</div>;
   }
@@ -72,7 +110,13 @@ export function Prefectures({
   );
 }
 
-export function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JSX.Element {
+export function PopulationChart({
+  prefectures,
+  apiKey,
+}: {
+  prefectures: PrefectureName[];
+  apiKey: string | null;
+}): JSX.Element {
   const [fetchedPopulations, setFetchedPopulations] = useState<DrawPopulation[]>([]);
 
   useEffect(() => {
@@ -80,7 +124,11 @@ export function PopulationChart({ prefectures }: { prefectures: PrefectureName[]
     const drawCodes = prefectures.map((e) => e.prefCode);
     const newFetchCodes = drawCodes.filter((drawCode) => !alreadyFetchedCodes.includes(drawCode));
 
-    fetchPopulation(newFetchCodes)
+    if (apiKey === null || apiKey.length === 0) {
+      return;
+    }
+
+    fetchPopulation(newFetchCodes, apiKey)
       .then((populationData) => {
         // populationDataをfetchedPopulationsに追加する。
         const populations: DrawPopulation[] = [];
@@ -100,7 +148,7 @@ export function PopulationChart({ prefectures }: { prefectures: PrefectureName[]
       .catch(() => {
         console.error("人口データを取得できませんでした。");
       });
-  }, [prefectures, fetchedPopulations]);
+  }, [prefectures, fetchedPopulations, apiKey]);
 
   const drawCodes = prefectures.map((e) => e.prefCode);
   const drawPopulations = fetchedPopulations.filter((e) => drawCodes.includes(e.prefCode));
@@ -112,6 +160,10 @@ export function PopulationChart({ prefectures }: { prefectures: PrefectureName[]
     return <Line type="monotone" dataKey="value" data={e.data} name={e.prefName} key={e.prefCode} stroke={color} />;
   });
 
+  if (apiKey === null || apiKey.length === 0) {
+    // 都道府県一覧のコンポーネントでAPI Keyの取得は促しているので、このコンポーネントでは何も表示しない。
+    return <></>;
+  }
   if (prefectures.length === 0) {
     return <div>人口推移グラフを表示したい都道府県をチェックしてください。</div>;
   }
@@ -144,10 +196,16 @@ export function PopulationChart({ prefectures }: { prefectures: PrefectureName[]
 
 function App(): JSX.Element {
   const [checkedPrefectures, setCheckedPrefectures] = useState<PrefectureName[]>([]);
+  const [apiKey, setApiKey] = useState<string | null>(null);
   return (
     <div className="app">
-      <Prefectures checkedPrefectures={checkedPrefectures} setCheckedPrefectures={setCheckedPrefectures} />
-      <PopulationChart prefectures={checkedPrefectures} />
+      <APIKey setApiKey={setApiKey} />
+      <Prefectures
+        checkedPrefectures={checkedPrefectures}
+        setCheckedPrefectures={setCheckedPrefectures}
+        apiKey={apiKey}
+      />
+      <PopulationChart prefectures={checkedPrefectures} apiKey={apiKey} />
     </div>
   );
 }

@@ -1,5 +1,3 @@
-import { API_KEY } from "./secret";
-
 const isFakeData = true;
 
 export interface PrefectureName {
@@ -28,7 +26,7 @@ function isPrefectureArray(array: any): array is PrefectureName[] {
   return isPrefArray;
 }
 
-export async function fetchPrefectures(): Promise<PrefectureName[]> {
+export async function fetchPrefectures(apiKey: string): Promise<PrefectureName[]> {
   const isFake = isFakeData;
   if (isFake) {
     return [
@@ -39,7 +37,7 @@ export async function fetchPrefectures(): Promise<PrefectureName[]> {
   }
   const response = await fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
     method: "GET",
-    headers: { "X-API-KEY": API_KEY },
+    headers: { "X-API-KEY": apiKey },
   });
   const data = await response.json();
   const prefectures = data.result;
@@ -84,7 +82,7 @@ function isFetchedPopulationArray(array: any): array is FetchedPopulation[] {
   return isPrefArray;
 }
 
-export async function fetchPopulation(prefCodes: number[]): Promise<FetchedPopulation[]> {
+export async function fetchPopulation(prefCodes: number[], apiKey: string): Promise<FetchedPopulation[]> {
   const isFake = isFakeData;
   if (isFake) {
     const fakeYears: number[] = [];
@@ -106,7 +104,7 @@ export async function fetchPopulation(prefCodes: number[]): Promise<FetchedPopul
       prefCode.toString();
     const response = await fetch(url, {
       method: "GET",
-      headers: { "X-API-KEY": API_KEY },
+      headers: { "X-API-KEY": apiKey },
     });
     const data = await response.json();
     const array = data.result.data;
