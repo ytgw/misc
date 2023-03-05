@@ -1,4 +1,4 @@
-const isFakeData = true;
+const isFakeData = false;
 
 export interface PrefectureName {
   prefCode: number;
