@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, fireEvent } from "@testing-library/react";
 import App, { Prefectures, PopulationChart } from "./App";
 import { fetchPrefectures, fetchPopulation } from "./api";
 
@@ -135,6 +135,13 @@ describe("App", () => {
 
   test("render App", async () => {
     await act(async () => render(<App />));
+    // チャートが表示されていないことを確認。
     expect(screen.getByText("人口推移グラフを表示したい都道府県をチェックしてください。")).toBeInTheDocument();
+    expect(screen.queryByText("RESAS")).toBeNull();
+
+    // チェック後はチャートが表示されていることを確認。
+    await act(() => fireEvent.click(screen.getByLabelText("北海道")));
+    expect(screen.queryByText("人口推移グラフを表示したい都道府県をチェックしてください。")).toBeNull();
+    expect(screen.getAllByText("北海道").length).toBe(2); // チェックボックスと凡例で2つ。
   });
 });
