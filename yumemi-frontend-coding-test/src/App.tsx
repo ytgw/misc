@@ -23,8 +23,8 @@ export function Prefectures({
       .then((pref) => {
         setPrefectures(pref);
       })
-      .catch((reason) => {
-        console.log(reason);
+      .catch(() => {
+        console.error("都道府県一覧を取得できませんでした。");
       });
   }, []);
 
@@ -97,8 +97,8 @@ export function PopulationChart({ prefectures }: { prefectures: PrefectureName[]
         }
         setFetchedPopulations(fetchedPopulations.concat(populations).sort((e1, e2) => e1.prefCode - e2.prefCode));
       })
-      .catch((reason) => {
-        console.log(reason);
+      .catch(() => {
+        console.error("人口データを取得できませんでした。");
       });
   }, [prefectures, fetchedPopulations]);
 
