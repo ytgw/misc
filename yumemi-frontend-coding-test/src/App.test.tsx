@@ -69,7 +69,7 @@ describe("Prefectures", () => {
     await act(async () =>
       render(<Prefectures checkedPrefectures={fakeData.result} setCheckedPrefectures={() => {}} />)
     );
-    const prefecture = screen.getByText(/東京都/i);
+    const prefecture = screen.getByText("東京都");
     expect(prefecture).toBeInTheDocument();
   });
 });
@@ -112,10 +112,10 @@ describe("PopulationChart", () => {
       { prefCode: 14, prefName: "神奈川県" },
     ];
     await act(async () => render(<PopulationChart prefectures={prefectures} />));
-    const source = screen.getByText(/出典：RESAS（地域経済分析システム）/i);
+    const source = screen.getByText("出典：RESAS（地域経済分析システム）");
     expect(source).toBeInTheDocument();
 
-    const chart = screen.getByText(/東京都/i);
+    const chart = screen.getByText("東京都");
     expect(chart).toBeInTheDocument();
   });
 });
@@ -135,6 +135,6 @@ describe("App", () => {
 
   test("render App", async () => {
     await act(async () => render(<App />));
-    expect(screen.getByText(/人口推移グラフを表示したい都道府県をチェックしてください。/i)).toBeInTheDocument();
+    expect(screen.getByText("人口推移グラフを表示したい都道府県をチェックしてください。")).toBeInTheDocument();
   });
 });
