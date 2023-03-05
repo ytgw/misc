@@ -56,7 +56,7 @@ describe("Prefectures", () => {
   };
 
   test("fetchPrefectures mock", async () => {
-    const prefectures = await fetchPrefectures();
+    const prefectures = await fetchPrefectures("api-key");
     expect(prefectures[0].prefCode).toBe(1);
     expect(prefectures[0].prefName).toBe("北海道");
     for (let i = 0; i < prefectures.length; i++) {
@@ -67,7 +67,7 @@ describe("Prefectures", () => {
 
   test("render Prefectures", async () => {
     await act(async () =>
-      render(<Prefectures checkedPrefectures={fakeData.result} setCheckedPrefectures={() => {}} />)
+      render(<Prefectures checkedPrefectures={fakeData.result} setCheckedPrefectures={() => {}} apiKey="api-key" />)
     );
     const prefecture = screen.getByText("東京都");
     expect(prefecture).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe("PopulationChart", () => {
   });
 
   test("fetchPopulation mock", async () => {
-    const fetchedPopulations = await fetchPopulation([1, 2, 3]);
+    const fetchedPopulations = await fetchPopulation([1, 2, 3], "api-key");
     expect(fetchedPopulations[0].prefCode).toBe(1);
     fetchedPopulations[0].data.forEach(({ year, value }, index) => {
       expect(year).toBe(1960 + 5 * index);
@@ -111,7 +111,7 @@ describe("PopulationChart", () => {
       { prefCode: 13, prefName: "東京都" },
       { prefCode: 14, prefName: "神奈川県" },
     ];
-    await act(async () => render(<PopulationChart prefectures={prefectures} />));
+    await act(async () => render(<PopulationChart prefectures={prefectures} apiKey="api-key" />));
     const source = screen.getByText("出典：RESAS（地域経済分析システム）");
     expect(source).toBeInTheDocument();
 
@@ -135,11 +135,23 @@ describe("App", () => {
 
   test("render App", async () => {
     await act(async () => render(<App />));
-    // チャートが表示されていないことを確認。
-    expect(screen.getByText("人口推移グラフを表示したい都道府県をチェックしてください。")).toBeInTheDocument();
-    expect(screen.queryByText("RESAS")).toBeNull();
+    // API Keyの設定前
+    expect(screen.getByText("RESAS API Keyを設定してください。")).toBeInTheDocument();
 
-    // チェック後はチャートが表示されていることを確認。
+    // API Keyの設定後、チャートが表示されていないことを確認。
+    await act(() => {
+      const apiKeyInputElement = screen.getByPlaceholderText("RESAS API Keyを入力してください。");
+      const changeResult = fireEvent.change(apiKeyInputElement, { target: { value: "api-key" } });
+
+      const apiKeySetButton = screen.getByRole("button", { name: "設定" });
+      const clickResult = fireEvent.click(apiKeySetButton);
+
+      return changeResult && clickResult;
+    });
+    expect(screen.getByText("人口推移グラフを表示したい都道府県をチェックしてください。")).toBeInTheDocument();
+    expect(screen.queryByText("出典：RESAS（地域経済分析システム）")).toBeNull();
+
+    // 都道府県チェック後はチャートが表示されていることを確認。
     await act(() => fireEvent.click(screen.getByLabelText("北海道")));
     expect(screen.queryByText("人口推移グラフを表示したい都道府県をチェックしてください。")).toBeNull();
     expect(screen.getAllByText("北海道").length).toBe(2); // チェックボックスと凡例で2つ。
