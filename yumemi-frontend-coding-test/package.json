@@ -18,6 +18,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages --dest yumemi-frontend-coding-test -d build/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -52,5 +54,6 @@
     "eslint-plugin-react": "^7.32.2",
     "prettier": "2.8.4",
     "typescript": "^4.9.5"
-  }
+  },
+  "homepage": "https://ytgw.github.io/misc/yumemi-frontend-coding-test/"
 }
