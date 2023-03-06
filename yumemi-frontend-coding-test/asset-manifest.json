@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/misc/yumemi-frontend-coding-test/static/css/main.7d208bcf.css",
+    "main.js": "/misc/yumemi-frontend-coding-test/static/js/main.7708c4f1.js",
+    "static/js/787.1991dfeb.chunk.js": "/misc/yumemi-frontend-coding-test/static/js/787.1991dfeb.chunk.js",
+    "index.html": "/misc/yumemi-frontend-coding-test/index.html",
+    "main.7d208bcf.css.map": "/misc/yumemi-frontend-coding-test/static/css/main.7d208bcf.css.map",
+    "main.7708c4f1.js.map": "/misc/yumemi-frontend-coding-test/static/js/main.7708c4f1.js.map",
+    "787.1991dfeb.chunk.js.map": "/misc/yumemi-frontend-coding-test/static/js/787.1991dfeb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7d208bcf.css",
+    "static/js/main.7708c4f1.js"
+  ]
+}
