@@ -59,7 +59,7 @@ export function Prefectures({
         setPrefectures(pref);
       })
       .catch(() => {
-        console.error("都道府県一覧を取得できませんでした。");
+        alert("都道府県一覧を取得できませんでした。RESAS API Keyを確認してください。");
       });
   }, [apiKey]);
 
@@ -146,7 +146,7 @@ export function PopulationChart({
         setFetchedPopulations(fetchedPopulations.concat(populations).sort((e1, e2) => e1.prefCode - e2.prefCode));
       })
       .catch(() => {
-        console.error("人口データを取得できませんでした。");
+        alert("人口データを取得できませんでした。RESAS API Keyを確認してください。");
       });
   }, [prefectures, fetchedPopulations, apiKey]);
 
