@@ -20,7 +20,7 @@ function APIKey({ setApiKey }: { setApiKey: (apiKey: string) => void }): JSX.Ele
       }}
     >
       <input
-        type="text"
+        type="password"
         placeholder="RESAS API Keyを入力してください。"
         value={inputApiKey}
         onChange={(event) => {
