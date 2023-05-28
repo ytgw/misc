@@ -1,4 +1,4 @@
-const isFakeData = false;
+const isFakeData = true;
 
 export interface PrefectureName {
   prefCode: number;
@@ -28,17 +28,16 @@ function isPrefectureArray(array: any): array is PrefectureName[] {
 
 export async function fetchPrefectures(apiKey: string): Promise<PrefectureName[]> {
   const isFake = isFakeData;
+  let url: string;
+  let headers: undefined | { "X-API-KEY": string };
   if (isFake) {
-    return [
-      { prefCode: 1, prefName: "北海道" },
-      { prefCode: 13, prefName: "東京都" },
-      { prefCode: 14, prefName: "神奈川県" },
-    ];
+    url = process.env.PUBLIC_URL + "/api/prefectures.json";
+    headers = undefined;
+  } else {
+    url = "https://opendata.resas-portal.go.jp/api/v1/prefectures";
+    headers = { "X-API-KEY": apiKey };
   }
-  const response = await fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
-    method: "GET",
-    headers: { "X-API-KEY": apiKey },
-  });
+  const response = await fetch(url, { method: "GET", headers });
   const data = await response.json();
   const prefectures = data.result;
   if (!isPrefectureArray(prefectures)) {
@@ -84,28 +83,20 @@ function isFetchedPopulationArray(array: any): array is FetchedPopulation[] {
 
 export async function fetchPopulation(prefCodes: number[], apiKey: string): Promise<FetchedPopulation[]> {
   const isFake = isFakeData;
-  if (isFake) {
-    const fakeYears: number[] = [];
-    for (let i = 1960; i <= 2020; i += 5) fakeYears.push(i);
-
-    const fakePopulations: FetchedPopulation[] = prefCodes.map((prefCode) => {
-      const data = fakeYears.map((year) => {
-        return { year, value: year * prefCode };
-      });
-      return { prefCode, data };
-    });
-    return fakePopulations;
-  }
-
   const populations: FetchedPopulation[] = [];
   for (const prefCode of prefCodes) {
-    const url =
-      "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=" +
-      prefCode.toString();
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { "X-API-KEY": apiKey },
-    });
+    let url: string;
+    let headers: undefined | { "X-API-KEY": string };
+    if (isFake) {
+      url = process.env.PUBLIC_URL + "/api/population_prefCode_" + prefCode.toString() + ".json";
+      headers = undefined;
+    } else {
+      url =
+        "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=" +
+        prefCode.toString();
+      headers = { "X-API-KEY": apiKey };
+    }
+    const response = await fetch(url, { method: "GET", headers });
     const data = await response.json();
     const array = data.result.data;
     if (!(array instanceof Array)) {
