@@ -72,11 +72,7 @@ export function Prefectures({
   );
 }
 
-export function PopulationChart({
-  prefectures,
-}: {
-  prefectures: PrefectureName[];
-}): JSX.Element {
+export function PopulationChart({ prefectures }: { prefectures: PrefectureName[] }): JSX.Element {
   const [fetchedPopulations, setFetchedPopulations] = useState<DrawPopulation[]>([]);
 
   useEffect(() => {
@@ -150,10 +146,7 @@ function App(): JSX.Element {
   const [checkedPrefectures, setCheckedPrefectures] = useState<PrefectureName[]>([]);
   return (
     <div className="app">
-      <Prefectures
-        checkedPrefectures={checkedPrefectures}
-        setCheckedPrefectures={setCheckedPrefectures}
-      />
+      <Prefectures checkedPrefectures={checkedPrefectures} setCheckedPrefectures={setCheckedPrefectures} />
       <PopulationChart prefectures={checkedPrefectures} />
     </div>
   );

@@ -25,7 +25,7 @@ function isPrefectureArray(array: any): array is PrefectureName[] {
 }
 
 export async function fetchPrefectures(): Promise<PrefectureName[]> {
-  const url = process.env.PUBLIC_URL + "/api/prefectures.json"
+  const url = process.env.PUBLIC_URL + "/api/prefectures.json";
   const response = await fetch(url, { method: "GET" });
   const data = await response.json();
   const prefectures = data.result;
