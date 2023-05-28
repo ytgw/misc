@@ -1,5 +1,3 @@
-const isFakeData = true;
-
 export interface PrefectureName {
   prefCode: number;
   prefName: string;
@@ -26,18 +24,9 @@ function isPrefectureArray(array: any): array is PrefectureName[] {
   return isPrefArray;
 }
 
-export async function fetchPrefectures(apiKey: string): Promise<PrefectureName[]> {
-  const isFake = isFakeData;
-  let url: string;
-  let headers: undefined | { "X-API-KEY": string };
-  if (isFake) {
-    url = process.env.PUBLIC_URL + "/api/prefectures.json";
-    headers = undefined;
-  } else {
-    url = "https://opendata.resas-portal.go.jp/api/v1/prefectures";
-    headers = { "X-API-KEY": apiKey };
-  }
-  const response = await fetch(url, { method: "GET", headers });
+export async function fetchPrefectures(): Promise<PrefectureName[]> {
+  const url = process.env.PUBLIC_URL + "/api/prefectures.json"
+  const response = await fetch(url, { method: "GET" });
   const data = await response.json();
   const prefectures = data.result;
   if (!isPrefectureArray(prefectures)) {
@@ -81,22 +70,11 @@ function isFetchedPopulationArray(array: any): array is FetchedPopulation[] {
   return isPrefArray;
 }
 
-export async function fetchPopulation(prefCodes: number[], apiKey: string): Promise<FetchedPopulation[]> {
-  const isFake = isFakeData;
+export async function fetchPopulation(prefCodes: number[]): Promise<FetchedPopulation[]> {
   const populations: FetchedPopulation[] = [];
   for (const prefCode of prefCodes) {
-    let url: string;
-    let headers: undefined | { "X-API-KEY": string };
-    if (isFake) {
-      url = process.env.PUBLIC_URL + "/api/population_prefCode_" + prefCode.toString() + ".json";
-      headers = undefined;
-    } else {
-      url =
-        "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=" +
-        prefCode.toString();
-      headers = { "X-API-KEY": apiKey };
-    }
-    const response = await fetch(url, { method: "GET", headers });
+    const url = process.env.PUBLIC_URL + "/api/population_prefCode_" + prefCode.toString() + ".json";
+    const response = await fetch(url, { method: "GET" });
     const data = await response.json();
     const array = data.result.data;
     if (!(array instanceof Array)) {
