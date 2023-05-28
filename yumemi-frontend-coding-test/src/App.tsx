@@ -154,7 +154,7 @@ export function PopulationChart({
   const drawPopulations = fetchedPopulations.filter((e) => drawCodes.includes(e.prefCode));
 
   const lineChartArray = drawPopulations.map((e) => {
-    const COLORS = ["red", "blue", "green", "yellow", "magenta", "cyan", "gray", "black"];
+    const COLORS = ["red", "blue", "green", "magenta", "gray", "black"];
     const color = COLORS[e.prefCode % COLORS.length];
 
     return <Line type="monotone" dataKey="value" data={e.data} name={e.prefName} key={e.prefCode} stroke={color} />;
