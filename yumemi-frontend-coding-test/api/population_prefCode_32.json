@@ -1,0 +1,100 @@
+{
+  "message": null,
+  "result": {
+    "boundaryYear": 2020,
+    "data": [
+      {
+        "label": "総人口",
+        "data": [
+          { "year": 1960, "value": 888886 },
+          { "year": 1965, "value": 821620 },
+          { "year": 1970, "value": 773575 },
+          { "year": 1975, "value": 768886 },
+          { "year": 1980, "value": 784795 },
+          { "year": 1985, "value": 794629 },
+          { "year": 1990, "value": 781021 },
+          { "year": 1995, "value": 771441 },
+          { "year": 2000, "value": 761503 },
+          { "year": 2005, "value": 742223 },
+          { "year": 2010, "value": 717397 },
+          { "year": 2015, "value": 694352 },
+          { "year": 2020, "value": 671126 },
+          { "year": 2025, "value": 642787 },
+          { "year": 2030, "value": 615424 },
+          { "year": 2035, "value": 587556 },
+          { "year": 2040, "value": 558290 },
+          { "year": 2045, "value": 528988 }
+        ]
+      },
+      {
+        "label": "年少人口",
+        "data": [
+          { "year": 1960, "value": 282596, "rate": 31.7 },
+          { "year": 1965, "value": 218403, "rate": 26.5 },
+          { "year": 1970, "value": 178457, "rate": 23 },
+          { "year": 1975, "value": 168072, "rate": 21.8 },
+          { "year": 1980, "value": 167310, "rate": 21.3 },
+          { "year": 1985, "value": 162817, "rate": 20.4 },
+          { "year": 1990, "value": 143884, "rate": 18.4 },
+          { "year": 1995, "value": 126403, "rate": 16.3 },
+          { "year": 2000, "value": 111982, "rate": 14.7 },
+          { "year": 2005, "value": 100542, "rate": 13.5 },
+          { "year": 2010, "value": 92218, "rate": 12.8 },
+          { "year": 2015, "value": 86056, "rate": 12.3 },
+          { "year": 2020, "value": 81641, "rate": 12.1 },
+          { "year": 2025, "value": 76203, "rate": 11.8 },
+          { "year": 2030, "value": 71080, "rate": 11.5 },
+          { "year": 2035, "value": 66336, "rate": 11.2 },
+          { "year": 2040, "value": 62832, "rate": 11.2 },
+          { "year": 2045, "value": 59392, "rate": 11.2 }
+        ]
+      },
+      {
+        "label": "生産年齢人口",
+        "data": [
+          { "year": 1960, "value": 531573, "rate": 59.8 },
+          { "year": 1965, "value": 523286, "rate": 63.6 },
+          { "year": 1970, "value": 508173, "rate": 65.6 },
+          { "year": 1975, "value": 504941, "rate": 65.6 },
+          { "year": 1980, "value": 509938, "rate": 64.9 },
+          { "year": 1985, "value": 510054, "rate": 64.1 },
+          { "year": 1990, "value": 494253, "rate": 63.2 },
+          { "year": 1995, "value": 477919, "rate": 61.9 },
+          { "year": 2000, "value": 460103, "rate": 60.4 },
+          { "year": 2005, "value": 439471, "rate": 59.2 },
+          { "year": 2010, "value": 414153, "rate": 57.7 },
+          { "year": 2015, "value": 376877, "rate": 54.2 },
+          { "year": 2020, "value": 352656, "rate": 52.5 },
+          { "year": 2025, "value": 335195, "rate": 52.1 },
+          { "year": 2030, "value": 319377, "rate": 51.8 },
+          { "year": 2035, "value": 303960, "rate": 51.7 },
+          { "year": 2040, "value": 280285, "rate": 50.2 },
+          { "year": 2045, "value": 260458, "rate": 49.2 }
+        ]
+      },
+      {
+        "label": "老年人口",
+        "data": [
+          { "year": 1960, "value": 74717, "rate": 8.4 },
+          { "year": 1965, "value": 79931, "rate": 9.7 },
+          { "year": 1970, "value": 86945, "rate": 11.2 },
+          { "year": 1975, "value": 95831, "rate": 12.4 },
+          { "year": 1980, "value": 107479, "rate": 13.6 },
+          { "year": 1985, "value": 121744, "rate": 15.3 },
+          { "year": 1990, "value": 142061, "rate": 18.1 },
+          { "year": 1995, "value": 167040, "rate": 21.6 },
+          { "year": 2000, "value": 189031, "rate": 24.8 },
+          { "year": 2005, "value": 201103, "rate": 27 },
+          { "year": 2010, "value": 207398, "rate": 28.9 },
+          { "year": 2015, "value": 222648, "rate": 32 },
+          { "year": 2020, "value": 227881, "rate": 33.9 },
+          { "year": 2025, "value": 231389, "rate": 35.9 },
+          { "year": 2030, "value": 224967, "rate": 36.5 },
+          { "year": 2035, "value": 217260, "rate": 36.9 },
+          { "year": 2040, "value": 215173, "rate": 38.5 },
+          { "year": 2045, "value": 209138, "rate": 39.5 }
+        ]
+      }
+    ]
+  }
+}
